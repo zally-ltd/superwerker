@@ -78,5 +78,8 @@ jobs:
       - name: run tests
         run: yarn test
         working-directory: cdk
+        env:
+          # Lambda modules create regional boto3 clients (e.g. ssm) at import time
+          AWS_DEFAULT_REGION: eu-central-1
 
 
