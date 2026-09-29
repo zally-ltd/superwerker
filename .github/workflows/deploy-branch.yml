@@ -8,8 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      HAS_AWS_CREDENTIALS: ${{ secrets.AWS_ACCESS_KEY != '' && secrets.AWS_SECRET_ACCESS_KEY != '' && secrets.AWS_BUCKET_NAME != '' }}
 
     steps:
+
+    - name: Check branch deployment credentials
+      if: env.HAS_AWS_CREDENTIALS != 'true'
+      run: echo "::notice title=Branch deployment skipped::AWS_ACCESS_KEY, AWS_SECRET_ACCESS_KEY or AWS_BUCKET_NAME is not configured, so templates are not uploaded to S3."
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -30,6 +36,7 @@ jobs:
     - uses: shallwefootball/s3-upload-action@master
       name: Upload S3
       id: S3
+      if: env.HAS_AWS_CREDENTIALS == 'true'
       with:
         aws_key_id: ${{ secrets.AWS_ACCESS_KEY }}
         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
