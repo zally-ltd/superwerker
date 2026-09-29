@@ -18,7 +18,7 @@ jobs:
       run: echo "::notice title=Branch deployment skipped::AWS_ACCESS_KEY, AWS_SECRET_ACCESS_KEY or AWS_BUCKET_NAME is not configured, so templates are not uploaded to S3."
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
