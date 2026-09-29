@@ -31,36 +31,33 @@ Resources:
           }
         - Statements: !Join
             - ","
-            - - !If
-                - IncludeBackup
-                - !Sub |
-                  {
-                      "Condition": {
-                          "ArnNotLike": {
-                              "aws:PrincipalARN": "arn:${AWS::Partition}:iam::*:role/stacksets-exec-*"
-                          }
-                      },
-                      "Action": [
-                          "iam:AttachRolePolicy",
-                          "iam:CreateRole",
-                          "iam:DeleteRole",
-                          "iam:DeleteRolePermissionsBoundary",
-                          "iam:DeleteRolePolicy",
-                          "iam:DetachRolePolicy",
-                          "iam:PutRolePermissionsBoundary",
-                          "iam:PutRolePolicy",
-                          "iam:UpdateAssumeRolePolicy",
-                          "iam:UpdateRole",
-                          "iam:UpdateRoleDescription"
-                      ],
-                      "Resource": [
-                          "arn:${AWS::Partition}:iam::*:role/service-role/AWSBackupDefaultServiceRole",
-                          "arn:${AWS::Partition}:iam::*:role/SuperwerkerBackupTagsEnforcementRemediationRole"
-                      ],
-                      "Effect": "Deny",
-                      "Sid": "SWProtectBackup"
-                  }
-                - !Ref AWS::NoValue
+            - - !Sub |
+                {
+                    "Condition": {
+                        "ArnNotLike": {
+                            "aws:PrincipalARN": "arn:${AWS::Partition}:iam::*:role/stacksets-exec-*"
+                        }
+                    },
+                    "Action": [
+                        "iam:AttachRolePolicy",
+                        "iam:CreateRole",
+                        "iam:DeleteRole",
+                        "iam:DeleteRolePermissionsBoundary",
+                        "iam:DeleteRolePolicy",
+                        "iam:DetachRolePolicy",
+                        "iam:PutRolePermissionsBoundary",
+                        "iam:PutRolePolicy",
+                        "iam:UpdateAssumeRolePolicy",
+                        "iam:UpdateRole",
+                        "iam:UpdateRoleDescription"
+                    ],
+                    "Resource": [
+                        "arn:${AWS::Partition}:iam::*:role/service-role/AWSBackupDefaultServiceRole",
+                        "arn:${AWS::Partition}:iam::*:role/SuperwerkerBackupTagsEnforcementRemediationRole"
+                    ],
+                    "Effect": "Deny",
+                    "Sid": "SWProtectBackup"
+                }
       Attach: true
 
   SCPCustomResource:
